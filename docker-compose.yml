@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  home-assistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: home-assistant
+    privileged: true
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - TZ=America/Denver
+    volumes:
+      - /srv/home-assistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+
+  matter-server:
+    image: ghcr.io/home-assistant-libs/python-matter-server:stable
+    container_name: matter-server
+    privileged: true
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /srv/home-assistant/matter-data:/data
+      - /run/dbus:/run/dbus
+    # Explicitly set the interface found in your logs
+    command: --storage-path /data --paa-root-cert-dir /data/credentials --bluetooth-adapter 0 --primary-interface eno1 --log-level debug --log-level-sdk progress
+
+  zwave-js-ui:
+    image: zwavejs/zwave-js-ui:latest
+    container_name: zwave-js-ui
+    restart: unless-stopped
+    network_mode: host
+    devices:
+      - /dev/ttyACM0:/dev/zwave
+    volumes:
+      - /srv/home-assistant/zwave-data:/usr/src/app/store
