@@ -1,0 +1,40 @@
+# Home Assistant internal state, credentials, and runtime data.
+# Everything in this file contains secrets, tokens, personal data, or is
+# reproducible/regenerated automatically — none of it belongs in a public repo.
+
+# Real secrets file (use secrets.yaml.example as a template)
+secrets.yaml
+
+# Internal storage: auth tokens, device/entity registries, integration
+# credentials (config_entries), HomeKit pairing state, cloud auth, etc.
+.storage/
+.cloud/
+
+# TLS certificate and private key
+*.crt
+*.key
+
+# Databases, logs, backups
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.*
+backups/
+
+# Runtime/cache/deps
+.cache/
+deps/
+tts/
+.ha_run.lock
+.HA_VERSION
+
+# Generated media (printer timelapses, camera snapshots, etc.)
+www/media/
+
+# Python build artifacts
+__pycache__/
+*.pyc
+
+# OS cruft
+.DS_Store

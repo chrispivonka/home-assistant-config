@@ -1,0 +1,454 @@
+- id: master_closet_lights_on
+  alias: Master Closet - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eve_motion_20eby9901_occupancy_2
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id:
+          - light.ceiling_light
+          - light.master_closet
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id:
+        - light.ceiling_light
+        - light.master_closet
+      data:
+        brightness_pct: 100
+  mode: single
+- id: master_closet_lights_off
+  alias: Master Closet - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eve_motion_20eby9901_occupancy_2
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.master_closet
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id:
+      - light.ceiling_light
+      - light.master_closet
+  mode: single
+- id: guest_bedroom_lights_on
+  alias: Guest Bedroom - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eve_motion_20eby9901_occupancy
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.guest_bedroom
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id: light.guest_bedroom
+      data:
+        brightness_pct: 100
+  mode: single
+- id: guest_bedroom_lights_off
+  alias: Guest Bedroom - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eve_motion_20eby9901_occupancy
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.guest_bedroom
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id: light.guest_bedroom
+  mode: single
+- id: guest_bathroom_lights_on
+  alias: Guest Bathroom - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eve_motion_20eby9901_occupancy_3
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.guest_bathroom
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id: light.guest_bathroom
+      data:
+        brightness_pct: 100
+  mode: single
+- id: guest_bathroom_lights_off
+  alias: Guest Bathroom - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eve_motion_20eby9901_occupancy_3
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.guest_bathroom
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id: light.guest_bathroom
+  mode: single
+- id: office_lights_on
+  alias: Office - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.presence_multi_sensor_fp300_occupancy
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.office
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id: light.office
+      data:
+        brightness_pct: 100
+  mode: single
+- id: office_lights_off
+  alias: Office - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.presence_multi_sensor_fp300_occupancy
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.office
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id: light.office
+  mode: single
+- id: master_bathroom_lights_on
+  alias: Master Bathroom - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.presence_multi_sensor_fp300_occupancy_2
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.master_bathroom
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id: light.master_bathroom
+      data:
+        brightness_pct: 100
+  mode: single
+- id: master_bathroom_lights_off
+  alias: Master Bathroom - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.presence_multi_sensor_fp300_occupancy_2
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.master_bathroom
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id: light.master_bathroom
+  mode: single
+- id: living_room_lights_on
+  alias: Living Room - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.my_ecobee_occupancy
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.living_room
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id: light.living_room
+      data:
+        brightness_pct: 100
+  mode: single
+- id: living_room_lights_off
+  alias: Living Room - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.my_ecobee_occupancy
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.living_room
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id: light.living_room
+  mode: single
+- id: master_bedroom_lights_on
+  alias: Master Bedroom - Turn on lights on motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroom_occupancy
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.master_bedroom
+        data:
+          brightness_pct: 5
+    default:
+    - action: light.turn_on
+      target:
+        entity_id: light.master_bedroom
+      data:
+        brightness_pct: 100
+  mode: single
+- id: master_bedroom_lights_off
+  alias: Master Bedroom - Turn off lights after no motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroom_occupancy
+    to: 'off'
+    for:
+      minutes: 5
+  - platform: state
+    entity_id: light.master_bedroom
+    to: 'on'
+    for:
+      minutes: 15
+  action:
+  - action: light.turn_off
+    target:
+      entity_id: light.master_bedroom
+  mode: single
+- id: '1788381318253'
+  alias: Low Battery Alert
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{% set ns = namespace(low=[]) %}{% for s in states.sensor %}{%
+      if s.attributes.device_class is defined and s.attributes.device_class == ''battery''
+      and s.state not in [''unknown'',''unavailable''] and s.state | float(100) <
+      20 %}{% set ns.low = ns.low + [s.name] %}{% endif %}{% endfor %}{{ ns.low |
+      count > 0 }}'
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    metadata: {}
+    data:
+      message: '{% set ns = namespace(low=[]) %}{% for s in states.sensor %}{% if
+        s.attributes.device_class is defined and s.attributes.device_class == ''battery''
+        and s.state not in [''unknown'',''unavailable''] and s.state | float(100)
+        < 20 %}{% set ns.low = ns.low + [s.name] %}{% endif %}{% endfor %}{{ ns.low
+        | join('', '') }} low on battery.'
+      title: Low Battery Alert
+  mode: single
+- id: '1788390482588'
+  alias: Device Offline Alert
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{% set relevant = [''binary_sensor'',''light'',''switch'',''lock'',''climate'',''cover'',''media_player'']
+      %}{{ states | selectattr(''domain'',''in'', relevant) | selectattr(''state'',''eq'',''unavailable'')
+      | rejectattr(''entity_id'', ''search'', ''iphone|living_room_camera|office_camera|master_bedroom_camera'')
+      | list | count > 0 }}'
+    for:
+      minutes: 15
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: Device Offline
+      message: '{% set relevant = [''binary_sensor'',''light'',''switch'',''lock'',''climate'',''cover'',''media_player'']
+        %}{{ states | selectattr(''domain'',''in'', relevant) | selectattr(''state'',''eq'',''unavailable'')
+        | rejectattr(''entity_id'', ''search'', ''iphone|living_room_camera|office_camera|master_bedroom_camera'')
+        | map(attribute=''name'') | join('', '') }} offline for 15+ minutes.'
+  mode: single
+- id: '1788390521607'
+  alias: Backup Failed Alert
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: event.backup_automatic_backup
+    attribute: event_type
+    to: failed
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: Backup Failed
+      message: The automatic Home Assistant backup failed. Check Settings > System
+        > Backups.
+  mode: single
+- id: '1788390566691'
+  alias: Doorbell Notifications
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: event.doorbell
+    id: ring
+  - trigger: state
+    entity_id: binary_sensor.doorbell_person
+    to: 'on'
+    id: person
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: '{{ ''Doorbell'' if trigger.id == ''ring'' else ''Person at Door'' }}'
+      message: '{{ ''Someone rang the doorbell.'' if trigger.id == ''ring'' else ''Person
+        detected at the front door.'' }}'
+      data:
+        image: /api/camera_proxy/camera.doorbell
+  mode: queued
+  max: 10
+- id: '1788390608848'
+  alias: Lights Left On When Away
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - person.chris
+    - person.jackie
+    to: not_home
+  conditions:
+  - condition: template
+    value_template: '{{ states.person | selectattr(''state'',''eq'',''home'') | list
+      | count == 0 }}'
+  - condition: template
+    value_template: '{{ states.light | selectattr(''state'',''eq'',''on'') | list
+      | count > 0 }}'
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: Lights Left On
+      message: '{{ states.light | selectattr(''state'',''eq'',''on'') | map(attribute=''name'')
+        | join('', '') }} left on - everyone''s away.'
+  mode: single
+- id: '1788479928048'
+  alias: Wine Fridge Door Left Open
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.eve_door_20ebn9901_door
+    to: 'on'
+    for:
+      minutes: 5
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: Wine Fridge Door Open
+      message: The wine fridge door has been open for 5 minutes.
+  - action: notify.mobile_app_jacquelyns_iphone
+    data:
+      title: Wine Fridge Door Open
+      message: The wine fridge door has been open for 5 minutes.
+  mode: single
+- id: '1789010420472'
+  alias: Cat Water Fountain - Low Water Alert
+  description: Notify when pump power draw indicates the fountain is running low or
+    dry
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.cat_water_fountain_low_water
+    to: 'on'
+    for:
+      minutes: 5
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: Cat Water Fountain
+      message: Water level looks low. Pump power draw has been elevated for 5+ minutes,
+        suggesting it is running dry. Time for a refill.
+  - action: notify.mobile_app_jacquelyns_iphone
+    data:
+      title: Cat Water Fountain
+      message: Water level looks low. Pump power draw has been elevated for 5+ minutes,
+        suggesting it is running dry. Time for a refill.
+  mode: single

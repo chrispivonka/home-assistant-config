@@ -1,0 +1,422 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Enhed er allerede registreret",
+            "reauth_successful": "Geautentificering vellykket"
+        },
+        "error": {
+            "cannot_connect": "Kunne ikke oprette forbindelse",
+            "invalid_auth": "Ugyldig autentificering",
+            "unknown": "Uventet fejl"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "email": "Email",
+                    "password": "Password",
+                    "region": "Region"
+                }
+            },
+            "reauth_confirm": {
+                "description": "PETLIBRO integration har brug for at genautentificere din konto",
+                "data": {
+                    "password": "Password"
+                }
+            }
+        }
+    },
+    "options": {
+        "abort": {
+            "no_member_data": "Medlemsdata ikke indlæst, tjek venligst loggene",
+            "account_settings_abort": "{account_settings_abort}",
+            "integration_settings_abort": "{integration_settings_abort}",
+            "no_settings_changed": "Ingen indstillinger blev ændret",
+            "error_check_logs": "Fejl, tjek venligst loggene"
+        },
+        "error": {
+            "unknown": "Uventet fejl"
+        },
+        "step": {
+			"init": {
+                "menu_options": {
+                    "integration_settings": "Integrationsindstillinger",
+                    "account_settings": "Kontoindstillinger"
+                }
+			},
+            "integration_settings": {
+                "title": "Integrationsindstillinger",
+                "data": {
+                    "manual_feed_portions": "Indstil manuel fodermængde efter portioner",
+                    "pet_feed_quantity_no_rfid": "Inkluder ikke-RFID kæledyrsforbrug",
+                    "enable_shared_pets": "Vis kæledyr fra delte enheder"
+                },
+                "data_description": {
+                    "manual_feed_portions": "Standard: Indstil efter den valgte enhed til dyrefoder ({uom}).",
+                    "pet_feed_quantity_no_rfid": "Kæledyrsforbrug vil inkludere ikke-RFID-enheder, når kun ét kæledyr er tilknyttet dem.",
+                    "enable_shared_pets": "Få adgang til kæledyr fra andre konti, der er knyttet til enheder, som de deler med dig."
+                }
+            },
+            "account_settings": {
+                "title": "Kontoindstillinger",
+                "description": "For konto: {email}",
+                "data": {
+                    "nickname": "Kaldenavn",
+                    "gender": "Køn"
+                },
+                "sections": {
+                    "measurement_unit": {
+                        "name": "Måleenheder",
+                        "data": {
+                            "feedUnitType": "Foderautomat/Fodring",
+                            "waterUnitType": "Fontæne/Drikke",
+                            "weightUnitType": "Vægt",
+                            "update_all_units": "Opdater måleenheden for alle Petlibro-enhedssensor-entiteter"
+                        },
+                        "data_description": {
+                            "feedUnitType": "Bemærk venligst, at 'kopper' ikke understøttes for sensor-entiteter.",
+                            "update_all_units": "Som standard opdaterer en ændring af enheden her kun sensor-entiteter af den type."
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "common": {
+        "reloading_integration": "Integrationen genindlæses om kort tid",
+        "settings_updated": "Indstillinger opdateret",
+        "no_settings_changed": "Ingen indstillinger blev ændret",
+        "sensors_updated": "Sensor-entiteter opdateret",
+        "account_updated": "Konto opdateret med succes"
+    },
+    "selector": {
+        "member_gender": {
+            "options": {
+                "male": "Mand",
+                "female": "Kvinde",
+                "none": "Ønsker ikke at oplyse"
+            }
+        },
+        "pet_sex": {
+            "options": {
+                "male": "Han",
+                "female": "Hun",
+                "none": "Ingen valgt"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "wifi_ssid": {
+                "name": "Wi-Fi SSID"
+            },
+            "wifi_rssi": {
+                "name": "Wi-Fi Signalstyrke"
+            },
+            "remaining_desiccant": {
+                "name": "Tørremiddel Resterende Dage"
+            },
+            "battery_state": {
+                "name": "Batteriniveau"
+            },
+            "electric_quantity": {
+                "name": "Batteri %"
+            },
+            "today_feeding_quantity_weight": {
+                "name": "Dagens Fodermængde (Vægt)"
+            },
+            "today_feeding_quantity_volume": {
+                "name": "Dagens Fodermængde (Volumen)"
+            },
+            "last_feed_quantity_weight": {
+                "name": "Sidste fodermængde (Vægt)"
+            },
+            "last_feed_quantity_volume": {
+                "name": "Sidste fodermængde (Volumen)"
+            },
+            "next_feed_time": {
+                "name": "Næste fodringstid"
+            },
+            "next_feed_quantity_weight": {
+                "name": "Næste fodermængde (Vægt)"
+            },
+            "next_feed_quantity_volume": {
+                "name": "Næste fodermængde (Volumen)"
+            },
+            "today_feeding_times": {
+                "name": "Dagens Fodertælling"
+            },
+            "today_eating_times": {
+                "name": "Dagens Spisetælling"
+            },
+            "today_eating_time": {
+                "name": "Dagens Samlede Spisetid"
+            },
+            "feeding_plan_state": {
+                "name": "Dagens Foderplan"
+            },
+            "today_drinking_amount": {
+                "name": "Dagens Vandindtag (ml)"
+            },
+            "weight": {
+                "name": "Nuværende Vægt"
+            },
+            "weight_percent": {
+                "name": "Resterende Vand (%)"
+            },
+            "remaining_water": {
+                "name": "Resterende Vand"
+            },
+            "use_water_interval": {
+                "name": "Vandinterval"
+            },
+            "use_water_duration": {
+                "name": "Vandets Varighed"
+            },
+            "remaining_filter_days": {
+                "name": "Resterende Filterdage"
+            },
+            "remaining_cleaning_days": {
+                "name": "Resterende Rengøringsdage"
+            },
+            "resolution": {
+                "name": "Kameraopløsning"
+            },
+            "night_vision": {
+                "name": "Nattesynstilstand"
+            },
+            "enable_video_record": {
+                "name": "Videooptagelse Aktiveret"
+            },
+            "video_record_switch": {
+                "name": "Videooptagelsesknap"
+            },
+            "video_record_mode": {
+                "name": "Videooptagelsestilstand"
+            },
+            "next_feeding_day": {
+                "name": "Fodringsplan"
+            },
+            "next_feeding_time": {
+                "name": "Fodring Begynder"
+            },
+            "next_feeding_end_time": {
+                "name": "Fodring Ender"
+            },
+            "feeding_plan": {
+                "name": "Fodringsplan"
+            },
+            "temperature": {
+                "name": "Temperatur"
+            },
+            "plate_position": {
+                "name": "Pladeposition"
+            },
+            "display_selection": {
+                "name": "Skærmsværdi"
+            },
+            "name": {
+                "name": "Navn"
+            },
+            "type": {
+                "name": "Kæledyrstype"
+            },
+            "breed_name": {
+                "name": "Race"
+            },
+            "age": {
+                "name": "Alder",
+                "state_attributes": {
+                    "years": {
+                        "name": "År"
+                    },
+                    "months": {
+                        "name": "Måneder"
+                    },
+                    "days": {
+                        "name": "Dage"
+                    },
+                    "days_until_birthday": {
+                        "name": "Dage til fødselsdag"
+                    }
+                }
+            },
+            "bound_device_nums": {
+                "name": "Tilknyttede enheder"
+            },
+            "rfid": {
+                "name": "RFID-halsbånd"
+            },
+            "today_fountain_drinking_count": {
+                "name": "Today's Fountain Drinking Count"
+            },
+            "today_fountain_drinking_amount": {
+                "name": "Today's Fountain Water Consumption"
+            },
+            "today_fountain_drinking_time": {
+                "name": "Today's Fountain Drinking Time"
+            }
+        },
+        "image": {
+            "avatar": {
+                "name": "Avatar"
+            }
+        },
+        "date": {
+            "birthday": {
+                "name": "Fødselsdato"
+            }
+        },
+        "switch": {
+            "child_lock_switch": {
+                "name": "Lå Knapper"
+            },
+            "enable_light": {
+                "name": "Aktivér Skærm"
+            },
+            "enable_sound": {
+                "name": "Aktivér Lyd"
+            },
+            "manual_feed_now": {
+                "name": "Manuel Åbning/Lukning af Låg"
+            },
+            "sterilization": {
+                "name": "Neutraliseret/steriliseret"
+            }
+        },
+        "button": {
+            "manual_feed": {
+                "name": "Manuel Fodring"
+            },
+            "manual_cleaning": {
+                "name": "Manuel Rengøring"
+            },
+            "enable_feeding_plan": {
+                "name": "Aktivér Fodringsplan"
+            },
+            "disable_feeding_plan": {
+                "name": "Deaktiver Fodringsplan"
+            },
+            "manual_lid_open": {
+                "name": "Åbn Låget Manuelt"
+            },
+            "display_on": {
+                "name": "Tænd for Skærmen"
+            },
+            "display_off": {
+                "name": "Sluk for Skærmen"
+            },
+            "sound_on": {
+                "name": "Tænd for Lyden"
+            },
+            "sound_off": {
+                "name": "Sluk for Lyden"
+            },
+            "desiccant_reset": {
+                "name": "Tørremiddel Udskiftet"
+            },
+            "ring_bell": {
+                "name": "Ring med Klokken"
+            },
+            "rotate_food_bowl": {
+                "name": "Drej Madskålen"
+            },
+            "reposition_schedule": {
+                "name": "Omplacer Tidsplanen"
+            }
+        },
+        "binary_sensor": {
+            "door_state": {
+                "name": "Låg"
+            },
+            "food_dispenser_state": {
+                "name": "Maddispenser"
+            },
+            "door_blocked": {
+                "name": "Lågstatus"
+            },
+            "food_low": {
+                "name": "Madstatus"
+            },
+            "online": {
+                "name": "Wi-Fi"
+            },
+            "whether_in_sleep_mode": {
+                "name": "Dvaletilstand"
+            },
+            "enable_low_battery_notice": {
+                "name": "Batteristatus"
+            },
+            "child_lock_switch": {
+                "name": "Knapper Lås"
+            },
+            "sound_switch": {
+                "name": "Lydstatus"
+            },
+            "display_switch": {
+                "name": "Skærmstatus"
+            }
+        },
+        "number": {
+            "sound_level": {
+                "name": "Lydstyrkeniveau"
+            },
+            "desiccant_cycle": {
+                "name": "Tørremiddelfrekvens"
+            },
+            "lid_close_time": {
+                "name": "Lågets Lukketid"
+            },
+            "manual_feed_quantity": {
+                "name": "Manuel fodermængde"
+            },
+            "weight": {
+                "name": "Nuværende vægt"
+            },
+            "drinking_goal": {
+                "name": "Drikkemål"
+            },
+            "feeding_goal": {
+                "name": "Tørfoder-mål"
+            },
+            "weight_goal": {
+                "name": "Vægtmål"
+            },
+            "training_goal": {
+                "name": "Træningsmål"
+            },
+            "playing_goal": {
+                "name": "Legemål"
+            },
+            "walking_goal": {
+                "name": "Gåmål"
+            }
+        },
+        "select": {
+            "lid_speed": {
+                "name": "Låghastighed"
+            },
+            "lid_mode": {
+                "name": "Lågtilstand"
+            },
+            "display_icon": {
+                "name": "Ikon på Skærmen"
+            },
+            "manual_feed_quantity_cups": {
+                "name": "Manuel fodermængde"
+            },
+            "pet_sex": {
+                "name": "Køn",
+                "state": {
+                    "none":"Ingen",
+                    "male": "Han",
+                    "female": "Hun"
+                }
+            }
+        },
+        "text": {
+            "display_text": {
+                "name": "Tekst på Skærmen"
+            }
+        }
+    }
+}
