@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 from collections.abc import Callable
+from dataclasses import dataclass
 from datetime import date
 from functools import cached_property
 from logging import getLogger
 from pathlib import Path
 import sys
 from typing import Any
+from urllib.parse import urlparse
 
 from homeassistant.util.dt import utcnow
 from homeassistant.const import (
@@ -30,7 +32,6 @@ from homeassistant.components.select import SelectEntity, SelectEntityDescriptio
 from homeassistant.components.sensor import (
     SensorEntity,
     SensorEntityDescription,
-    dataclass,
 )
 from homeassistant.components.sensor.const import SensorDeviceClass, SensorStateClass
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
@@ -465,9 +466,20 @@ class PL_PetImageEntity(PL_PetEntity, ImageEntity):
         image_bytes = None
         try:
             if url:
-                async with self.api.session.websession.get(url) as resp:
-                    if resp.status == 200:
-                        image_bytes = await resp.read()
+                try:
+                    parsed = urlparse(url)
+                    host = parsed.hostname or ""
+                    allowed = parsed.scheme == "https" and (
+                        host == "petlibro.com" or host.endswith(".petlibro.com")
+                    )
+                except Exception:
+                    allowed = False
+                if not allowed:
+                    _LOGGER.warning("Avatar URL blocked (not a trusted petlibro.com HTTPS URL): %s", url)
+                else:
+                    async with self.api.session.websession.get(url) as resp:
+                        if resp.status == 200:
+                            image_bytes = await resp.read()
             if not image_bytes:
                 path = (
                     Path(self.hass.config.config_dir)
@@ -582,6 +594,27 @@ PET_ENTITY_MAP: dict[PL_PetEntity, tuple[PL_PetEntityDescription]] = {
             state_class=SensorStateClass.TOTAL_INCREASING,
             device_class=SensorDeviceClass.DURATION,
             native_unit_of_measurement=UnitOfTime.SECONDS,
+        ),
+        PL_PetSensorEntityDescription(
+            key="today_bathroom_visits",
+            translation_key="today_bathroom_visits",
+            name="Today's Litter Box Visits",
+            icon="mdi:cat",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        PL_PetSensorEntityDescription(
+            key="today_bathroom_pee_visits",
+            translation_key="today_bathroom_pee_visits",
+            name="Today's Pee Visits",
+            icon="mdi:water",
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
+        PL_PetSensorEntityDescription(
+            key="today_bathroom_poo_visits",
+            translation_key="today_bathroom_poo_visits",
+            name="Today's Poo Visits",
+            icon="mdi:emoticon-poop",
+            state_class=SensorStateClass.TOTAL_INCREASING,
         ),
     ),
     PL_PetImageEntity: (

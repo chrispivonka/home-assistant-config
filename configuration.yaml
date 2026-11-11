@@ -19,6 +19,9 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 127.0.0.1
+    - ::1
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 
 bluetooth:
 
@@ -30,3 +33,6 @@ recorder:
     entity_globs:
       - sensor.*_signal_strength
       - sensor.*_rssi
+
+shell_command:
+  check_docker_updates: "cat /config/docker_updates_status.txt"

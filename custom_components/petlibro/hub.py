@@ -11,7 +11,11 @@ from homeassistant.const import CONF_REGION, CONF_API_TOKEN
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.helpers.device_registry import async_get as async_get_device_register
+from homeassistant.helpers.device_registry import (
+    DeviceEntry,
+    async_entries_for_config_entry,
+    async_get as async_get_device_register,
+)
 from homeassistant.util.dt import utcnow
 from .api import PetLibroAPI  # Use a relative import if inside the same package
 from .const import CONF_EMAIL, CONF_PASSWORD, IntegrationSetting
@@ -189,7 +193,7 @@ class PetLibroHub:
                 _LOGGER.error("Error fetching shared pet info.")
 
         if not pet_list:
-            _LOGGER.warning("No pets found in the API response.")
+            _LOGGER.debug("No pets found in the API response.")
             return  # Early return if no pets found
 
         for pet_data in pet_list:
@@ -235,6 +239,21 @@ class PetLibroHub:
     async def refresh_data(self) -> bool:
         """Refresh all known devices, member and pets info from the PETLIBRO API."""
 
+        # If the initial device load failed or returned no devices (e.g. a transient
+        # API/server error during setup), retry so the integration can recover
+        # without requiring a reinstall.
+        if not self.devices:
+            _LOGGER.debug("No devices loaded yet, attempting to load devices again.")
+            await self.load_devices()
+
+            if self.devices:
+                _LOGGER.debug(
+                    "Device reload successful, %d device(s) loaded.",
+                    len(self.devices),
+                )
+            else:
+                _LOGGER.debug("Device reload completed, but no devices were found.")
+
         if not self.devices and not self.member and not self.pets:
             _LOGGER.error("No devices, member, or pets to refresh.")
             return False
@@ -243,7 +262,7 @@ class PetLibroHub:
         if not self.member:
             _LOGGER.warning("No member to refresh.")
         if not self.pets:
-            _LOGGER.warning("No pets to refresh.")
+            _LOGGER.debug("No pets to refresh.")
 
         now = utcnow()
         refresh_tasks, data_objects = [], []
@@ -378,6 +397,21 @@ class PetLibroHub:
         if not pet:
             _LOGGER.debug("Pet with id %s not found.", id)
         return pet
+
+    def get_registered_device(self, identifiers: set) -> DeviceEntry | None:
+        """Return this config entry's registered device matching the identifiers.
+
+        DeviceRegistry.async_get_device is deprecated and stops working in HA 2027.8.
+        Its replacement, async_get_device_by_identifier, only exists since HA 2026.8,
+        while hacs.json still allows HA 2025.1, so look through the devices of this
+        config entry instead, which works on all of those versions.
+        """
+        for device in async_entries_for_config_entry(
+            self.device_register, self.entry.entry_id
+        ):
+            if device.identifiers & identifiers:
+                return device
+        return None
 
     def update_options(self, new_options: Mapping[str, Any]) -> None:
         """Update config entry options."""

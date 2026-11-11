@@ -1,7 +1,6 @@
 """Support for PETLIBRO buttons."""
 from __future__ import annotations
 import re
-from .api import make_api_call
 import aiohttp
 from aiohttp import ClientSession, ClientError
 from collections.abc import Callable, Coroutine
@@ -27,6 +26,7 @@ from .devices.feeders.feeder import Feeder
 from .devices.feeders.air_smart_feeder import AirSmartFeeder
 from .devices.feeders.granary_smart_feeder import GranarySmartFeeder
 from .devices.feeders.granary_smart_camera_feeder import GranarySmartCameraFeeder
+from .devices.feeders.granary_2_vision_feeder import Granary2VisionFeeder
 from .devices.feeders.one_rfid_smart_feeder import OneRFIDSmartFeeder
 from .devices.feeders.polar_wet_food_feeder import PolarWetFoodFeeder
 from .devices.feeders.space_smart_feeder import SpaceSmartFeeder
@@ -359,6 +359,22 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
             set_fn=lambda d: d.api.feeding_plan_today_all(d.serial, False),
         ),
     ],
+    Granary2VisionFeeder: [
+        PetLibroButtonEntityDescription[Granary2VisionFeeder](
+            key="free_feeding_mode",
+            translation_key="free_feeding_mode",
+            icon="mdi:autorenew",
+            set_fn=lambda device: device.set_free_feeding_mode(),
+            name="Enable Free Feeding (Smart Feed)"
+        ),
+        PetLibroButtonEntityDescription[Granary2VisionFeeder](
+            key="plan_feeding_mode",
+            translation_key="plan_feeding_mode",
+            icon="mdi:calendar-clock",
+            set_fn=lambda device: device.set_plan_feeding_mode(),
+            name="Enable Feeding Plan Mode"
+        ),
+    ],
     OneRFIDSmartFeeder: [
         PetLibroButtonEntityDescription[OneRFIDSmartFeeder](
             key="manual_feed",
@@ -511,6 +527,12 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
             set_fn=lambda device: device.set_light_off(),
             name="Turn Off Indicator"
         ),
+        PetLibroButtonEntityDescription[PolarWetFoodFeeder](
+            key="cleaning_reset",
+            translation_key="cleaning_reset",
+            set_fn=lambda device: device.set_cleaning_reset(),
+            name="Cleaning Reset"
+        ),
     ],
     SpaceSmartFeeder: [
         PetLibroButtonEntityDescription[SpaceSmartFeeder](
@@ -657,7 +679,14 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
             translation_key="filter_reset",
             set_fn=lambda device: device.set_filter_reset(),
             name="Filter Reset"
-        )
+        ),
+        PetLibroButtonEntityDescription[DockstreamSmartFountain](
+            key="calibrate_weight",
+            translation_key="calibrate_weight",
+            icon="mdi:scale",
+            set_fn=lambda device: device.calibrate_weight(),
+            name="Calibrate Weight Sensor"
+        ),
     ],
     DockstreamSmartRFIDFountain: [
         PetLibroButtonEntityDescription[DockstreamSmartRFIDFountain](
@@ -779,6 +808,18 @@ DEVICE_BUTTON_MAP: dict[type[Device], list[PetLibroButtonEntityDescription]] = {
             translation_key="trigger_vacuum",
             set_fn=lambda device: device.trigger_vacuum(),
             name="Run Air Purifier",
+        ),
+        PetLibroButtonEntityDescription[LumaSmartLitterBox](
+            key="cleaning_reset",
+            translation_key="cleaning_reset",
+            set_fn=lambda device: device.set_cleaning_reset(),
+            name="Cleaning Reset",
+        ),
+        PetLibroButtonEntityDescription[LumaSmartLitterBox](
+            key="filter_reset",
+            translation_key="filter_reset",
+            set_fn=lambda device: device.set_filter_reset(),
+            name="Filter Reset",
         ),
     ],
 }

@@ -31,6 +31,12 @@ class GranarySmartCameraFeeder(Device):  # Inherit directly from Device
             get_work_record = await self.api.get_device_work_record(self.serial)
             feeding_plan_list = (await self.api.device_feeding_plan_list(self.serial)
                 if self._data.get("enableFeedingPlan") else [])
+            get_device_events = await self.api.device_events(self.serial)
+            try:
+                get_tutk_info = await self.api.tutk_info()
+            except PetLibroAPIError as err:
+                _LOGGER.warning(f"Error fetching TUTK info for GranarySmartCameraFeeder: {err}")
+                get_tutk_info = {}
             # Update internal data with fetched API data
             self.update_data({
                 "grainStatus": grain_status or {},
@@ -39,7 +45,9 @@ class GranarySmartCameraFeeder(Device):  # Inherit directly from Device
                 "getUpgrade": get_upgrade or {},
                 "getfeedingplantoday": get_feeding_plan_today or {},
                 "feedingPlan": feeding_plan_list or [],
-                "workRecord": get_work_record or [],          
+                "workRecord": get_work_record or [],
+                "getDeviceEvents": get_device_events or {},
+                "tutkInfo": get_tutk_info or {},
             })
         except PetLibroAPIError as err:
             _LOGGER.error(f"Error refreshing data for GranarySmartCameraFeeder: {err}")
@@ -216,6 +224,57 @@ class GranarySmartCameraFeeder(Device):  # Inherit directly from Device
     def video_record_mode(self) -> str:
         """Return the current video recording mode."""
         return self._data.get("realInfo", {}).get("videoRecordMode", "unknown")
+
+    @property
+    def motion_detected(self) -> bool:
+        events = self._data.get("getDeviceEvents", {}).get("data", {}).get("eventInfos", [])
+        return any(event.get("eventKey") == "MOTION_DETECTED" for event in events)
+
+    @property
+    def sound_detected(self) -> bool:
+        events = self._data.get("getDeviceEvents", {}).get("data", {}).get("eventInfos", [])
+        return any(event.get("eventKey") == "SOUND_DETECTED" for event in events)
+
+    @property
+    def camera_id(self) -> str:
+        """Return the camera TUTK/Kalay UID (20-char) from the device record."""
+        return cast(str, self._data.get("cameraId", "") or "")
+
+    @property
+    def camera_auth_info(self) -> str:
+        """Return the camera TUTK auth info from realInfo."""
+        value = self._data.get("realInfo", {}).get("cameraAuthInfo")
+        return value if isinstance(value, str) else ""
+
+    @property
+    def tutk_user_token(self) -> str:
+        """Return the TUTK user token from /member/third/tutk/info."""
+        return cast(str, self._data.get("tutkInfo", {}).get("userToken", "") or "")
+
+    @property
+    def tutk_app_url(self) -> str:
+        """Return the TUTK app/vsaas URL from /member/third/tutk/info."""
+        return cast(str, self._data.get("tutkInfo", {}).get("appTutkUrl", "") or "")
+
+    @property
+    def enable_camera(self) -> bool:
+        """Return whether the camera is enabled."""
+        return bool(self._data.get("realInfo", {}).get("enableCamera", False))
+
+    @property
+    def camera_switch(self) -> bool:
+        """Return the camera switch state."""
+        return bool(self._data.get("realInfo", {}).get("cameraSwitch", False))
+
+    @property
+    def motion_detection_switch(self) -> bool:
+        """Return the motion detection switch state."""
+        return bool(self._data.get("realInfo", {}).get("motionDetectionSwitch", False))
+
+    @property
+    def sound_detection_switch(self) -> bool:
+        """Return the sound detection switch state."""
+        return bool(self._data.get("realInfo", {}).get("soundDetectionSwitch", False))
     
     @property
     def remaining_desiccant(self) -> float | None:

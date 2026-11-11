@@ -486,3 +486,23 @@
       message: Water level looks low. Pump power draw has been elevated for 5+ minutes,
         suggesting it is running dry. Time for a refill.
   mode: single
+- id: '1789500000000'
+  alias: Docker Updates Available Alert
+  description: Reads the weekly host-cron update check and notifies if anything is behind
+  triggers:
+  - trigger: time
+    at: "09:05:00"
+  conditions:
+  - condition: time
+    weekday:
+    - sun
+  actions:
+  - action: shell_command.check_docker_updates
+    response_variable: update_check
+  - condition: template
+    value_template: "{{ 'available' in (update_check.stdout | lower) }}"
+  - action: notify.mobile_app_chris_iphone
+    data:
+      title: Docker Updates Available
+      message: '{{ update_check.stdout }}'
+  mode: single
